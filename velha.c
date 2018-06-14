@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int v;
-
+int v1 = 0;
+int v = 1;
 typedef struct tic {
     int livre;
     int mm;
@@ -13,12 +13,12 @@ typedef struct tic {
 
 
 void buildtree(velha* no, char campo[3][3]){
-        printf("Estou no node: %d\n", v);
-        v++;
-    if (no == NULL || no->livre == 0){
+        //printf("Estou no node: %d\n", v);
+
+    if (no->livre == 0){
         return;
     }
-    
+
     char jog;
     int next;
     if(no->mm = 0){
@@ -42,17 +42,19 @@ void buildtree(velha* no, char campo[3][3]){
     }
     else if(no->mm == 0)
         next = 1;
-    
+
     //printf("%c\n", jog);
     no->filhos = (velha**)calloc(no->livre, sizeof(velha*));
     for(int i = 0; i < no->livre; i++){
-        no->filhos[i] = (velha*) calloc(no->livre, sizeof(velha));
+        no->filhos[i] = (velha*) calloc(1, sizeof(velha));
         no->filhos[i]->livre = no->livre - 1;
         no->filhos[i]->mm = next;
         buildtree(no->filhos[i], campo);
+        printf("%d\n", v1);
+        v1++;
 
     }
-    
+
 
 
 }
@@ -92,14 +94,14 @@ char verifica (char campo[][3]){
                 cx++;
             }
             else if(campo[j][i] == 'o'){
-                cb++;    
+                cb++;
         }
         if(lx == 3 || cx == 3)
             return 'x';
         if(lb == 3 || cb == 3)
-            return 'o';    
+            return 'o';
 
-        
+
     }
         lx = 0;
         lb = 0;
@@ -109,10 +111,22 @@ char verifica (char campo[][3]){
     return 'n';
 }
 
+void conta(velha* no){
+    if(no->livre == 0)
+      return;
+    v1++;
+    for(int i = 0; i < no->livre; i++)
+        conta(no->filhos[i]);
+}
+
+
+
 int main(){
-    newGame();
+    velha *raiz = newGame();
+    //conta(raiz);
+    //printf("\n%d", v1);
     char c[3][3];
-    
+
     c[0][0] = 'x';
     c[0][1] = 'x';
     c[0][2] = 'x';
